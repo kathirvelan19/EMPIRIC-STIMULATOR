@@ -21,7 +21,7 @@
     .option-detail { font-size: 14px; color: #444; }
 
     table { width:100%; border-collapse:collapse; margin-top:15px; }
-    th,td { border:1px solid #ddd; padding:10px; text-align:left; font-size:14px; }
+    th, td { border:1px solid #ddd; padding:10px; text-align:left; font-size:14px; }
     th { background:#f1f1f1; }
 
     .bar { height:14px; border-radius:6px; background:#eee; }
@@ -61,15 +61,36 @@
     </div>
 
     <h3>Local Resistance Data (SSTI)</h3>
-    <table>
-     
-      <tr><th>Antibiotic</th><th>Bloodstream Infection (%R)</th><th>Graph</th></tr>
-      <tr><td>Cefuroxime</td>81%<td></td><td><i class="fa-solid fa-triangle-exclamation" style="color:#e74c3c; font-size:20px;"></i> <!-- Red warning --><div class="bar"><div class="fill high" style="width:81%"></div></div></td></tr>
-      <tr><td>Cotrimoxazole</td><td>52%</td><td><i class="fa-solid fa-circle-check" style="color:#f1c40f; font-size:20px;"></i> <!-- Yellow tick --><div class="bar"><div class="fill mid" style="width:52%"></div></div></td></tr>
-      <tr><td>Clindamycin</td><td>7%</td><td><i class="fa-solid fa-circle-check" style="color:#4cb903; font-size:20px;"></i> <!-- Blue tick --><div class="bar"><div class="fill low" style="width:7%"></div></div></td></tr>
-      <tr><td>Vancomycin</td><td>2%</td><td><i class="fa-solid fa-circle-check" style="color:#4cb903; font-size:20px;"></i><div class="bar"><div class="fill low" style="width:2%"></div></div></td></tr>
-      
-    </table>
+    <div style="display:flex; flex-wrap:wrap; gap:20px; align-items:flex-start;">
+
+      <!-- Resistance Table -->
+      <div style="flex:1; min-width:300px;">
+        <table>
+          <tr><th>Antibiotic</th><th>Skin And Soft Tissue Infection (%R)</th><th>Graph</th></tr>
+          <tr><td>Cefuroxime</td><td>81%</td>
+            <td><i class="fa-solid fa-triangle-exclamation" style="color:#e74c3c; font-size:20px;"></i>
+              <div class="bar"><div class="fill high" style="width:81%"></div></div></td></tr>
+          <tr><td>Cotrimoxazole</td><td>52%</td>
+            <td><i class="fa-solid fa-circle-check" style="color:#f1c40f; font-size:20px;"></i>
+              <div class="bar"><div class="fill mid" style="width:52%"></div></div></td></tr>
+          <tr><td>Clindamycin</td><td>7%</td>
+            <td><i class="fa-solid fa-circle-check" style="color:#4cb903; font-size:20px;"></i>
+              <div class="bar"><div class="fill low" style="width:7%"></div></div></td></tr>
+          <tr><td>Vancomycin</td><td>2%</td>
+            <td><i class="fa-solid fa-circle-check" style="color:#4cb903; font-size:20px;"></i>
+              <div class="bar"><div class="fill low" style="width:2%"></div></div></td></tr>
+        </table>
+      </div>
+
+      <!-- Summary Box -->
+      <div style="flex:0 0 300px; border:1px solid #16a085; border-radius:10px; background:#e6f7f4; padding:20px; box-shadow:0 2px 6px rgba(0,0,0,0.05);">
+        <h4 style="margin-top:0; color:#2c3e50;">Summary</h4>
+        <p><strong>Preferred Antibiotic:</strong> Meropenem</p>
+        <p><strong>Predominant Pathogen:</strong> E. Coli (25.4%)</p>
+        <p><strong>Total Isolates:</strong> 321</p>
+      </div>
+
+    </div>
 
     <a href="index.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Back to Intake</a>
     <button id="downloadPdfBtn" class="back-btn" style="margin-left:10px;"><i class="fa-solid fa-file-pdf"></i> Download PDF</button> 
@@ -104,8 +125,9 @@ document.getElementById('downloadPdfBtn').addEventListener('click', async functi
     const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
     doc.addImage(imgData, 'PNG', 40, 100, pdfWidth, pdfHeight);
 
-    doc.save(`Patient_${patientId}.pdf`);
+    doc.save(`Patient_${patientId}_SSTI.pdf`);
     buttons.forEach(btn => btn.style.display = 'inline-block');
 });
 </script>
+</body>
 </html>
