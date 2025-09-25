@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MediFlow - Patient Intake</title>
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f8fc;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: 40px auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: bold;
+      color: #555;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccd6e0;
+      border-radius: 5px;
+      font-size: 14px;
+    }
+
+    textarea {
+      resize: vertical;
+      height: 80px;
+    }
+
+    /* ✅ 2x2 grid */
+    .infection-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin: 20px 0;
+    }
+
+    .infection-btn {
+      padding: 20px;
+      border: 1px solid #ccd6e0;
+      border-radius: 8px;
+      background: #f9fbfd;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-weight: bold;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      color: #333;
+    }
+
+    .infection-btn i {
+      font-size: 22px;
+      color: #1d72f3;
+    }
+
+    .infection-btn:hover {
+      background: #e6f0ff;
+      border-color: #1d72f3;
+    }
+
+    .infection-btn.active {
+      background: #1d72f3;
+      color: white;
+      border-color: #1d72f3;
+    }
+
+    .infection-btn.active i {
+      color: white;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+
+    .btn {
+      padding: 10px 18px;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .btn-primary {
+      background: #1d72f3;
+      color: white;
+    }
+
+    .btn-secondary {
+      background: #f0f0f0;
+      color: #555;
+    }
+
+    .btn:hover {
+      opacity: 0.9;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>Patient Intake: Suspected Source of Infection</h2>
+
+    <div class="form-group">
+      <label>Patient ID/MRN</label>
+      <input type="text" id="patientId" placeholder="e.g., P12345">
+    </div>
+
+    <div class="form-group">
+      <label>Date of Birth</label>
+      <input type="date" id="dob">
+    </div>
+
+    <div class="form-group">
+      <label>Admission Date</label>
+      <input type="date" id="admissionDate">
+    </div>
+
+    <div class="form-group">
+      <label>Brief Clinical Summary</label>
+      <textarea id="summary" placeholder="Enter summary..."></textarea>
+    </div>
+
+    <h3 style="margin-top:20px; color:#333;">Select Suspected Source of Infection</h3>
+    <div class="infection-grid">
+      <div class="infection-btn" data-target="blood.html"><i class="fa-solid fa-droplet"></i> Blood</div>
+      <div class="infection-btn" data-target="lungs.html"><i class="fas fa-lungs"></i> Lungs</div>
+      <div class="infection-btn" data-target="uti.html"><i class="fa-solid fa-vial"></i> Urinary Tract</div>
+      <div class="infection-btn" data-target="ssti.html"><i class="fa-solid fa-bandage"></i> SSTI / SSI</div>
+    </div>
+
+    <div class="buttons">
+      <button class="btn btn-primary" id="nextBtn">Next</button>
+      <button class="btn btn-secondary" onclick="window.location.reload()">Cancel / Clear</button>
+    </div>
+  </div>
+
+  <script>
+    let selectedTarget = null;
+
+    // handle infection button click
+    document.querySelectorAll('.infection-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.infection-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        selectedTarget = this.getAttribute('data-target');
+      });
+    });
+
+    // handle Next button
+    document.getElementById('nextBtn').addEventListener('click', function() {
+      const patientId = document.getElementById('patientId').value.trim();
+      const dob = document.getElementById('dob').value.trim();
+      const admissionDate = document.getElementById('admissionDate').value.trim();
+
+      if (!patientId || !dob || !admissionDate) {
+        alert("⚠️ Please fill Patient ID, Date of Birth, and Admission Date before proceeding.");
+        return;
+      }
+
+      if (!selectedTarget) {
+        alert("⚠️ Please select a suspected source of infection.");
+        return;
+      }
+
+      // redirect
+      window.location.href = selectedTarget;
+      // redirect with patient info
+      window.location.href = selectedTarget + 
+  `?patientId=${encodeURIComponent(patientId)}&dob=${encodeURIComponent(dob)}&admissionDate=${encodeURIComponent(admissionDate)}`;
+
+    });
+  </script>
+
+</body>
+</html>

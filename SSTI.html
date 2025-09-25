@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MediFlow - SSTI Guidelines</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background:#f4fbf9; margin:0; padding:0; }
+    header { background:#16a085; color:#fff; padding:15px 25px; font-size:18px; font-weight:bold; }
+    .container { max-width:1000px; margin:30px auto; background:#fff; padding:30px; border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.1); }
+    h2 { color:#2c3e50; margin-bottom:15px; }
+    h3 { margin-top:25px; color:#333; }
+
+    .options-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; margin-top: 20px; }
+    .option-card { border: 1px solid #dbe4f0; border-left: 6px solid #16a085; border-radius: 10px; background: #f8fcfb; padding: 18px; box-shadow: 0 2px 6px rgba(0,0,0,0.05); transition: 0.2s; }
+    .option-card:hover { background: #e6f7f4; transform: translateY(-2px); }
+    .option-title { font-weight: bold; color: #16a085; margin-bottom: 8px; font-size: 15px; }
+    .option-detail { font-size: 14px; color: #444; }
+
+    table { width:100%; border-collapse:collapse; margin-top:15px; }
+    th,td { border:1px solid #ddd; padding:10px; text-align:left; font-size:14px; }
+    th { background:#f1f1f1; }
+
+    .bar { height:14px; border-radius:6px; background:#eee; }
+    .fill { height:100%; border-radius:6px; }
+    .low { background:#2ecc71; } 
+    .mid { background:#f39c12; } 
+    .high { background:#e74c3c; }
+
+    .back-btn { display:inline-block; margin-top:25px; padding:10px 18px; background:#16a085; color:white; text-decoration:none; border-radius:6px; font-weight:bold; }
+    .back-btn:hover { opacity:0.9; }
+  </style>
+</head>
+<body>
+  <header><i class="fa-solid fa-notes-medical"></i> Skin & Soft Tissue Infections (SSTI)</header>
+
+  <div class="container">
+    <h2>ICMR Guidelines – SSTI / SSI</h2>
+
+    <h3>SSTI / SSI – Cellulitis</h3>
+    <div class="options-grid">
+      <div class="option-card"><div class="option-title">First Line – Option 1</div><div class="option-detail">Inj Cefazolin 1–2g q8h</div></div>
+      <div class="option-card"><div class="option-title">First Line – Option 2</div><div class="option-detail">Inj Amoxicillin-clavulanate 1.2g TDS</div></div>
+      <div class="option-card"><div class="option-title">Alternative – Option 1</div><div class="option-detail">Inj Cefuroxime 1.5g q8h</div></div>
+      <div class="option-card"><div class="option-title">Alternative – Option 2</div><div class="option-detail">Inj Clindamycin 600–900mg IV TDS</div></div>
+    </div>
+
+    <h3>SSTI / SSI – Cellulitis with MRSA Risk (Mild)</h3>
+    <div class="options-grid">
+      <div class="option-card"><div class="option-title">Option 1</div><div class="option-detail">Trimethoprim-sulfamethoxazole 800/160 mg BD</div></div>
+      <div class="option-card"><div class="option-title">Option 2</div><div class="option-detail">Doxycycline 100 mg q12h</div></div>
+    </div>
+
+    <h3>SSTI / SSI – Cellulitis with MRSA Risk (Moderate–Severe)</h3>
+    <div class="options-grid">
+      <div class="option-card"><div class="option-title">Option 1</div><div class="option-detail">Vancomycin 15–20 mg/kg/dose q8–12h</div></div>
+      <div class="option-card"><div class="option-title">Option 2</div><div class="option-detail">Inj Linezolid 600mg q12h</div></div>
+    </div>
+
+    <h3>Local Resistance Data (SSTI)</h3>
+    <table>
+     
+      <tr><th>Antibiotic</th><th>Bloodstream Infection (%R)</th><th>Graph</th></tr>
+      <tr><td>Cefuroxime</td>81%<td></td><td><i class="fa-solid fa-triangle-exclamation" style="color:#e74c3c; font-size:20px;"></i> <!-- Red warning --><div class="bar"><div class="fill high" style="width:81%"></div></div></td></tr>
+      <tr><td>Cotrimoxazole</td><td>52%</td><td><i class="fa-solid fa-circle-check" style="color:#f1c40f; font-size:20px;"></i> <!-- Yellow tick --><div class="bar"><div class="fill mid" style="width:52%"></div></div></td></tr>
+      <tr><td>Clindamycin</td><td>7%</td><td><i class="fa-solid fa-circle-check" style="color:#4cb903; font-size:20px;"></i> <!-- Blue tick --><div class="bar"><div class="fill low" style="width:7%"></div></div></td></tr>
+      <tr><td>Vancomycin</td><td>2%</td><td><i class="fa-solid fa-circle-check" style="color:#4cb903; font-size:20px;"></i><div class="bar"><div class="fill low" style="width:2%"></div></div></td></tr>
+      
+    </table>
+
+    <a href="index.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Back to Intake</a>
+    <button id="downloadPdfBtn" class="back-btn" style="margin-left:10px;"><i class="fa-solid fa-file-pdf"></i> Download PDF</button> 
+  </div>
+
+<script>
+const { jsPDF } = window.jspdf;
+
+// URL params
+const urlParams = new URLSearchParams(window.location.search);
+const patientId = urlParams.get('patientId') || "N/A";
+const dob = urlParams.get('dob') || "N/A";
+const admissionDate = urlParams.get('admissionDate') || "N/A";
+
+document.getElementById('downloadPdfBtn').addEventListener('click', async function() {
+    const container = document.querySelector('.container');
+    const buttons = container.querySelectorAll('.back-btn');
+    buttons.forEach(btn => btn.style.display = 'none');
+
+    const canvas = await html2canvas(container, { scale: 2 });
+    const imgData = canvas.toDataURL('image/png');
+
+    const doc = new jsPDF('p', 'pt', 'a4');
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(12);
+
+    doc.text(`Patient ID: ${patientId}`, 40, 40);
+    doc.text(`Date of Birth: ${dob}`, 40, 60);
+    doc.text(`Admission Date: ${admissionDate}`, 40, 80);
+
+    const pdfWidth = doc.internal.pageSize.getWidth() - 80;
+    const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+    doc.addImage(imgData, 'PNG', 40, 100, pdfWidth, pdfHeight);
+
+    doc.save(`Patient_${patientId}.pdf`);
+    buttons.forEach(btn => btn.style.display = 'inline-block');
+});
+</script>
+</html>

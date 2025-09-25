@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MediFlow - Blood (Sepsis) Guidelines</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background:#f5f8fc; margin:0; padding:0; }
+    header { background:#8e44ad; color:#fff; padding:15px 25px; font-size:18px; font-weight:bold; }
+    .container { max-width:1000px; margin:30px auto; background:#fff; padding:30px; border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.1); }
+    h2 { color:#2c3e50; margin-bottom:15px; }
+    h3 { margin-top:25px; color:#333; }
+
+    /* --- Treatment Option Cards --- */
+    .options-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 15px;
+      margin-top: 20px;
+    }
+    .option-card {
+      border: 1px solid #dbe4f0;
+      border-left: 6px solid #8e44ad;
+      border-radius: 10px;
+      background: #faf8fd;
+      padding: 18px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      transition: 0.2s;
+    }
+    .option-card:hover {
+      background: #f0e9f7;
+      transform: translateY(-2px);
+    }
+    .option-title {
+      font-weight: bold;
+      color: #8e44ad;
+      margin-bottom: 8px;
+      font-size: 15px;
+    }
+    .option-detail {
+      font-size: 14px;
+      color: #444;
+    }
+
+    /* --- Table --- */
+    table { width:100%; border-collapse:collapse; margin-top:15px; }
+    th,td { border:1px solid #ddd; padding:10px; text-align:left; font-size:14px; }
+    th { background:#f1f1f1; }
+
+    /* --- Resistance Bars --- */
+    .bar { height:14px; border-radius:6px; background:#eee; }
+    .fill { height:100%; border-radius:6px; }
+    .low { background:#2ecc71; } 
+    .mid { background:#f39c12; } 
+    .high { background:#e74c3c; }
+
+    /* --- Back Button --- */
+    .back-btn { display:inline-block; margin-top:25px; padding:10px 18px; background:#8e44ad; color:white; text-decoration:none; border-radius:6px; font-weight:bold; }
+    .back-btn:hover { opacity:0.9; }
+  </style>
+</head>
+<body>
+  <header><i class="fa-solid fa-droplet"></i> Bloodstream Infection: Hospital Acquired Sepsis</header>
+
+  <div class="container">
+    <h2>ICMR Guidelines – Hospital Acquired Sepsis</h2>
+
+    <div class="options-grid">
+      <div class="option-card">
+        <div class="option-title">First Line – Option 1</div>
+        <div class="option-detail">Meropenem 1g IV q8h</div>
+      </div>
+      <div class="option-card">
+        <div class="option-title">First Line – Option 2</div>
+        <div class="option-detail">Imipenem-cilastatin IV 1g stat and 500mg q6h</div>
+      </div>
+      <div class="option-card">
+        <div class="option-title">Alternative – Option 1</div>
+        <div class="option-detail">Polymyxin B 15–20 lakh units IV stat, then 7.5–10 lakh IV q12h</div>
+      </div>
+      <div class="option-card">
+        <div class="option-title">Alternative – Option 2</div>
+        <div class="option-detail">Colistin 9MU IV stat, then 4.5MU IV q12h</div>
+      </div>
+    </div>
+
+    <h3>Local Resistance Data (Bloodstream Infections)</h3>
+    <table>
+      <tr><th>Antibiotic</th><th>Bloodstream Infection (%R)</th><th>Graph</th></tr>
+      <tr><td>Ciprofloxacin</td><td>93%</td><td><i class="fa-solid fa-triangle-exclamation" style="color:#e74c3c; font-size:20px;"></i> <!-- Red warning --><div class="bar"><div class="fill high" style="width:93%"></div></div></td></tr>
+      <tr><td>Cefepime</td><td>69%</td><td><i class="fa-solid fa-circle-check" style="color:#f1c40f; font-size:20px;"></i> <!-- Yellow tick --><div class="bar"><div class="fill mid" style="width:69%"></div></div></td></tr>
+      <tr><td>Piperacillin-tazobactam</td><td>24%</td><td><i class="fa-solid fa-circle-check" style="color:#4cb903; font-size:20px;"></i> <!-- Blue tick --><div class="bar"><div class="fill low" style="width:10%"></div></div></td></tr>
+      <tr><td>Cefoperazone-sulbactam</td><td>10%</td><td><i class="fa-solid fa-circle-check" style="color:#4cb903; font-size:20px;"></i><div class="bar"><div class="fill low" style="width:10%"></div></div></td></tr>
+      
+    </table>
+
+    <a href="index.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Back to Intake</a>
+    <button id="downloadPdfBtn" class="back-btn" style="margin-left:10px;"><i class="fa-solid fa-file-pdf"></i> Download PDF</button>
+
+
+</div>
+  
+</body>
+
+<script>
+const { jsPDF } = window.jspdf;
+
+// Get URL params
+const urlParams = new URLSearchParams(window.location.search);
+const patientId = urlParams.get('patientId') || "N/A";
+const dob = urlParams.get('dob') || "N/A";
+const admissionDate = urlParams.get('admissionDate') || "N/A";
+
+document.getElementById('downloadPdfBtn').addEventListener('click', async function() {
+    const container = document.querySelector('.container');
+    const buttons = container.querySelectorAll('.back-btn'); // buttons to hide
+    
+    // Hide buttons temporarily
+    buttons.forEach(btn => btn.style.display = 'none');
+
+    // Capture container as image
+    const canvas = await html2canvas(container, { scale: 2 });
+    const imgData = canvas.toDataURL('image/png');
+
+    // Create PDF
+    const doc = new jsPDF('p', 'pt', 'a4');
+    doc.setFont('helvetica', 'normal');  // professional font
+    doc.setFontSize(12);
+
+    // Add patient info at top
+    doc.text(`Patient ID: ${patientId}`, 40, 40);
+    doc.text(`Date of Birth: ${dob}`, 40, 60);
+    doc.text(`Admission Date: ${admissionDate}`, 40, 80);
+
+    // Add the captured page image below patient info
+    const pdfWidth = doc.internal.pageSize.getWidth() - 80; // margins
+    const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+    doc.addImage(imgData, 'PNG', 40, 100, pdfWidth, pdfHeight);
+
+    // Save PDF
+    doc.save(`Patient_${patientId}.pdf`);
+
+    // Restore buttons
+    buttons.forEach(btn => btn.style.display = 'inline-block');
+});
+</script>
+
+
+</html>
