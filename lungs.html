@@ -60,19 +60,41 @@
     </div>
 
     <h3>Local Resistance Data (Respiratory Infections)</h3>
-    <table>
-      <tr><th>Antibiotic</th><th>Bloodstream Infection (%R)</th><th>Graph</th></tr>
-      <tr><td>Piperacillin-tazobactam</td>68%<td></td><td><i class="fa-solid fa-triangle-exclamation" style="color:#e74c3c; font-size:20px;"></i> <!-- Red warning --><div class="bar"><div class="fill high" style="width:68%"></div></div></td></tr>
-      <tr><td>Imipenem</td><td>55%</td><td><i class="fa-solid fa-circle-check" style="color:#f1c40f; font-size:20px;"></i> <!-- Yellow tick --><div class="bar"><div class="fill mid" style="width:55%"></div></div></td></tr>
-      <tr><td>Cefoperazone-sulbactam</td><td>47%</td><td><i class="fa-solid fa-circle-check" style="color:#4cb903; font-size:20px;"></i> <!-- Blue tick --><div class="bar"><div class="fill low" style="width:47%"></div></div></td></tr>
-      <tr><td>Meropenem</td><td>47%</td><td><i class="fa-solid fa-circle-check" style="color:#4cb903; font-size:20px;"></i><div class="bar"><div class="fill low" style="width:47%"></div></div></td></tr>
+    <div style="display:flex; flex-wrap:wrap; gap:20px; align-items:flex-start;">
       
-    </table>
+      <!-- Resistance Table -->
+      <div style="flex:1; min-width:300px;">
+        <table>
+          <tr><th>Antibiotic</th><th>Resistance %</th><th>Graph</th></tr>
+          <tr><td>Piperacillin-tazobactam</td><td>68%</td>
+            <td><i class="fa-solid fa-triangle-exclamation" style="color:#e74c3c; font-size:20px;"></i>
+              <div class="bar"><div class="fill high" style="width:68%"></div></div></td></tr>
+          <tr><td>Imipenem</td><td>55%</td>
+            <td><i class="fa-solid fa-circle-check" style="color:#f1c40f; font-size:20px;"></i>
+              <div class="bar"><div class="fill mid" style="width:55%"></div></div></td></tr>
+          <tr><td>Cefoperazone-sulbactam</td><td>47%</td>
+            <td><i class="fa-solid fa-circle-check" style="color:#4cb903; font-size:20px;"></i>
+              <div class="bar"><div class="fill low" style="width:47%"></div></div></td></tr>
+          <tr><td>Meropenem</td><td>47%</td>
+            <td><i class="fa-solid fa-circle-check" style="color:#4cb903; font-size:20px;"></i>
+              <div class="bar"><div class="fill low" style="width:47%"></div></div></td></tr>
+        </table>
+      </div>
+
+      <!-- Summary Box -->
+      <div style="flex:0 0 300px; border:1px solid #1d72f3; border-radius:10px; background:#eef5ff; padding:20px; box-shadow:0 2px 6px rgba(0,0,0,0.05);">
+        <h4 style="margin-top:0; color:#1d3557;">Summary</h4>
+        <p><strong>Preferred Antibiotic:</strong> Ceftazidime-Avibactam + Aztreonam</p>
+        <p><strong>Predominant Pathogen:</strong> K. Pneumoniae (32%)</p>
+        <p><strong>Total Isolates:</strong> 149</p>
+      </div>
+
+    </div>
 
     <a href="index.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Back to Intake</a>
     <button id="downloadPdfBtn" class="back-btn" style="margin-left:10px;"><i class="fa-solid fa-file-pdf"></i> Download PDF</button>
   </div>
-</body>
+
 <script>
 const { jsPDF } = window.jspdf;
 
@@ -84,12 +106,12 @@ const admissionDate = urlParams.get('admissionDate') || "N/A";
 
 document.getElementById('downloadPdfBtn').addEventListener('click', async function() {
     const container = document.querySelector('.container');
-    const buttons = container.querySelectorAll('.back-btn'); // buttons to hide
+    const buttons = container.querySelectorAll('.back-btn');
     
-    // Temporarily hide buttons
+    // Hide buttons for PDF
     buttons.forEach(btn => btn.style.display = 'none');
 
-    // Capture the container
+    // Capture container as image
     const canvas = await html2canvas(container, { scale: 2 });
     const imgData = canvas.toDataURL('image/png');
 
@@ -103,7 +125,7 @@ document.getElementById('downloadPdfBtn').addEventListener('click', async functi
     doc.text(`Date of Birth: ${dob}`, 40, 60);
     doc.text(`Admission Date: ${admissionDate}`, 40, 80);
 
-    // Add container content below
+    // Add container content
     const pdfWidth = doc.internal.pageSize.getWidth() - 80;
     const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
     doc.addImage(imgData, 'PNG', 40, 100, pdfWidth, pdfHeight);
@@ -115,4 +137,6 @@ document.getElementById('downloadPdfBtn').addEventListener('click', async functi
     buttons.forEach(btn => btn.style.display = 'inline-block');
 });
 </script>
+
+</body>
 </html>
