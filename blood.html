@@ -5,8 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MediFlow - Blood (Sepsis) Guidelines</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background:#f5f8fc; margin:0; padding:0; }
@@ -15,50 +14,22 @@
     h2 { color:#2c3e50; margin-bottom:15px; }
     h3 { margin-top:25px; color:#333; }
 
-    /* --- Treatment Option Cards --- */
-    .options-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 15px;
-      margin-top: 20px;
-    }
-    .option-card {
-      border: 1px solid #dbe4f0;
-      border-left: 6px solid #8e44ad;
-      border-radius: 10px;
-      background: #faf8fd;
-      padding: 18px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-      transition: 0.2s;
-    }
-    .option-card:hover {
-      background: #f0e9f7;
-      transform: translateY(-2px);
-    }
-    .option-title {
-      font-weight: bold;
-      color: #8e44ad;
-      margin-bottom: 8px;
-      font-size: 15px;
-    }
-    .option-detail {
-      font-size: 14px;
-      color: #444;
-    }
+    .options-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; margin-top: 20px; }
+    .option-card { border: 1px solid #dbe4f0; border-left: 6px solid #8e44ad; border-radius: 10px; background: #faf8fd; padding: 18px; box-shadow: 0 2px 6px rgba(0,0,0,0.05); transition: 0.2s; }
+    .option-card:hover { background: #f0e9f7; transform: translateY(-2px); }
+    .option-title { font-weight: bold; color: #8e44ad; margin-bottom: 8px; font-size: 15px; }
+    .option-detail { font-size: 14px; color: #444; }
 
-    /* --- Table --- */
     table { width:100%; border-collapse:collapse; margin-top:15px; }
-    th,td { border:1px solid #ddd; padding:10px; text-align:left; font-size:14px; }
+    th, td { border:1px solid #ddd; padding:10px; text-align:left; font-size:14px; }
     th { background:#f1f1f1; }
 
-    /* --- Resistance Bars --- */
     .bar { height:14px; border-radius:6px; background:#eee; }
     .fill { height:100%; border-radius:6px; }
     .low { background:#2ecc71; } 
     .mid { background:#f39c12; } 
     .high { background:#e74c3c; }
 
-    /* --- Back Button --- */
     .back-btn { display:inline-block; margin-top:25px; padding:10px 18px; background:#8e44ad; color:white; text-decoration:none; border-radius:6px; font-weight:bold; }
     .back-btn:hover { opacity:0.9; }
   </style>
@@ -89,22 +60,41 @@
     </div>
 
     <h3>Local Resistance Data (Bloodstream Infections)</h3>
-    <table>
-      <tr><th>Antibiotic</th><th>Bloodstream Infection (%R)</th><th>Graph</th></tr>
-      <tr><td>Ciprofloxacin</td><td>93%</td><td><i class="fa-solid fa-triangle-exclamation" style="color:#e74c3c; font-size:20px;"></i> <!-- Red warning --><div class="bar"><div class="fill high" style="width:93%"></div></div></td></tr>
-      <tr><td>Cefepime</td><td>69%</td><td><i class="fa-solid fa-circle-check" style="color:#f1c40f; font-size:20px;"></i> <!-- Yellow tick --><div class="bar"><div class="fill mid" style="width:69%"></div></div></td></tr>
-      <tr><td>Piperacillin-tazobactam</td><td>24%</td><td><i class="fa-solid fa-circle-check" style="color:#4cb903; font-size:20px;"></i> <!-- Blue tick --><div class="bar"><div class="fill low" style="width:10%"></div></div></td></tr>
-      <tr><td>Cefoperazone-sulbactam</td><td>10%</td><td><i class="fa-solid fa-circle-check" style="color:#4cb903; font-size:20px;"></i><div class="bar"><div class="fill low" style="width:10%"></div></div></td></tr>
-      
-    </table>
+    <div style="display:flex; flex-wrap:wrap; gap:20px; align-items:flex-start;">
+
+      <!-- Resistance Table -->
+      <div style="flex:1; min-width:300px;">
+        <table>
+          <tr><th>Antibiotic</th><th>Bloodstream Infection (%R)</th><th>Graph</th></tr>
+          <tr><td>Ciprofloxacin</td><td>93%</td>
+            <td><i class="fa-solid fa-triangle-exclamation" style="color:#e74c3c; font-size:20px;"></i>
+              <div class="bar"><div class="fill high" style="width:93%"></div></div></td></tr>
+          <tr><td>Cefepime</td><td>69%</td>
+            <td><i class="fa-solid fa-circle-check" style="color:#f1c40f; font-size:20px;"></i>
+              <div class="bar"><div class="fill mid" style="width:69%"></div></div></td></tr>
+          <tr><td>Piperacillin-tazobactam</td><td>24%</td>
+            <td><i class="fa-solid fa-circle-check" style="color:#4cb903; font-size:20px;"></i>
+              <div class="bar"><div class="fill low" style="width:24%"></div></div></td></tr>
+          <tr><td>Cefoperazone-sulbactam</td><td>10%</td>
+            <td><i class="fa-solid fa-circle-check" style="color:#4cb903; font-size:20px;"></i>
+              <div class="bar"><div class="fill low" style="width:10%"></div></div></td></tr>
+        </table>
+      </div>
+
+      <!-- Summary Box -->
+      <div style="flex:0 0 300px; border:1px solid #8e44ad; border-radius:10px; background:#f5e8fa; padding:20px; box-shadow:0 2px 6px rgba(0,0,0,0.05);">
+        <h4 style="margin-top:0; color:#2c3e50;">Summary</h4>
+        <p><strong>Preferred Antibiotic:</strong> Cefoperazone-Sulbactam</p>
+        <p><strong>Predominant Pathogen:</strong> E. Coli (35.4%)</p>
+        <p><strong>Total Isolates:</strong> 220</p>
+      </div>
+
+    </div>
 
     <a href="index.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Back to Intake</a>
     <button id="downloadPdfBtn" class="back-btn" style="margin-left:10px;"><i class="fa-solid fa-file-pdf"></i> Download PDF</button>
 
-
-</div>
-  
-</body>
+  </div>
 
 <script>
 const { jsPDF } = window.jspdf;
@@ -142,12 +132,12 @@ document.getElementById('downloadPdfBtn').addEventListener('click', async functi
     doc.addImage(imgData, 'PNG', 40, 100, pdfWidth, pdfHeight);
 
     // Save PDF
-    doc.save(`Patient_${patientId}.pdf`);
+    doc.save(`Patient_${patientId}_Blood.pdf`);
 
     // Restore buttons
     buttons.forEach(btn => btn.style.display = 'inline-block');
 });
 </script>
 
-
+</body>
 </html>
